@@ -1,5 +1,7 @@
 # appPCapi
 
+![Catalogo Immagine 2024-10-29 174618](https://github.com/user-attachments/assets/221973a6-69b1-4570-a4b6-5b2aa50d2e3f)
+
 
 Project Description
 
