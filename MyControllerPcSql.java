@@ -107,41 +107,59 @@ public class MyControllerPcSql {
     
     //mappiamo il carrello //num è la quantita di prodotti . che mettero nelle card 
     
-    //facciamo un reindirizzamento ad un altra funzione mappata con /carrello che mi stampa il carrello
-    //cosi non abbiamo bisogni di fare il refresh della pagina ad ogni cambiamento del carrello 
-    @PostMapping("/aggiungiCarrello")
+
+      @PostMapping("/aggiungiCarrello")
     public String compra(@RequestParam("nome") String nome, @RequestParam("num") int num) {
-    	
-    	if(num>0)//abbiamo effettuato un acquisto
-    		//itero per trovare il nome dell oggetto e la quantita 
-    		for (pc  pc: listaPc) {
-    			
-    			if(pc.getNome().equals(nome)) {
-    				//controlliamo se quei pc sono disponibili in magazzino
-    				 if(pc.qntMagazzino>=num) {
-    					 //metto il pc nell'array list di pcAcquistati che poi verra stampato nel carrello
-    					// utilizziamol l'oggetto pc esistente per creare un oggetto pcComprati
-    	                    pcComprati pcAcquistato = new pcComprati(
-    	                        pc.getNome(),
-    	                        pc.getMarca(),
-    	                        pc.getDescrizione(),
-    	                        pc.getPrezzo(),
-    	                        pc.getUrl(),
-    	                        pc.getQntMagazzino(),
-    	                        pc.getQntVenduti(),
-    	                        num // quantità acquistata)
-    	                        );
-    	                    
-    	                
-    	                    pcComprati.add(pcAcquistato); // lo aggiungo al carrello dove viene visualizzato 
-    				 }
-    				
-    			}
-    		}
-    	return "redirect:/funzioneCarrello";
-    	 //return "redirect:/store";
+        // Controlla se il carrello ha già un elemento
+        boolean found = false;
+
+        if (num > 0) { // Abbiamo effettuato un acquisto
+            
+            for (pc pc : listaPc) {
+                if (pc.getNome().equals(nome)) {
+                   
+                    if (pc.qntMagazzino >= num) {
+                        // Controllo se il PC è già nel carrello
+                        for (pcComprati pcC : pcComprati) {
+                            if (pcC.getNome().equals(nome)) {
+                                
+                                pcC.setQnt(pcC.getQnt() + num);
+                                found = true; 
+                                
+                                pcC.setQntVenduti(pcC.getQntVenduti() + num);
+                                pcC.setQntMagazzino(pcC.getQntMagazzino()-num);
+                               
+                                break; 
+                            }
+                        }
+
+                        // Se l'articolo non è ancora presente nel carrello
+                        if (!found) {
+                           
+                            pcComprati pcAcquistato = new pcComprati(
+                                pc.getNome(),
+                                pc.getMarca(),
+                                pc.getDescrizione(),
+                                pc.getPrezzo(),
+                                pc.getUrl(),
+                                pc.getQntMagazzino(),
+                                pc.getQntVenduti(),
+                                num // Quantità acquistata
+                            );
+
+                           
+                            pcComprati.add(pcAcquistato);
+                        }
+                    } else {
+                        // condol log di "avviso " per il gestore del magazzino
+                        System.out.println("Non ci sono abbastanza PC disponibili in magazzino.");
+                    }
+                }
+            }
+        }
+
+        return "redirect:/funzioneCarrello"; // Reindirizza alla pagina del carrello
     }
-   
     //pero cosi rimuovo tutti  i pc che si chiamano cosi. forse è meglio usare gli indici con un for sugli indici dell'array pcComprati
     @PostMapping("/rimuoviDalCarrello")
     public String rimuoviDalCarrello(@RequestParam("nome") String nome, Model m1) {
