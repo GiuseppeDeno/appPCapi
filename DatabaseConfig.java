@@ -14,20 +14,14 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  */
 @Configuration
 public class DatabaseConfig {
-	/*
-	 * Bean è un annotazione che va a definire un oggetto in springboot e lo rende valido e visibile in
-	 * in tutta l'applicazione
-	 * 
-	 * il dataSouce bean vuol dire che tutta la applicazione è in grado di vedere quello che c'è questa classe quindi in jdbctemplate
-	 * gia è in grado di interagire con il database
-	 */
+	
 	@Bean
 	public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/world");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/---your db ");
         dataSource.setUsername("root");
-        dataSource.setPassword("1234");
+        dataSource.setPassword("");
         return dataSource;
     }
 
