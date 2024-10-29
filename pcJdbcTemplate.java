@@ -9,53 +9,34 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
-/* JdbcTemplate è una classe di Spring per interagire con il database in modo semplificato.
- * Fornisce metodi come update per query INSERT, DELETE, UPDATE e query per le SELECT.
- * JdbcTemplate si basa sulle configurazioni di connessione al database specificate nel file di configurazione Spring.
- */
+
 
 @Component
-// Grazie a questo è possibile utilizzare l'iniezione delle dipendenze con @Autowired
+
 public class pcJdbcTemplate {
 
     // Oggetto JdbcTemplate per eseguire query e update sul database.
     private JdbcTemplate jdbcTemplateObject;
 
-    /*
-     * Metodo per iniettare l'istanza di JdbcTemplate nella classe.
-     * @Autowired indica a Spring di fornire automaticamente un'istanza di JdbcTemplate.
-     * Autowired in Spring indica che un’istanza di JdbcTemplate deve essere iniettata automaticamente.
-     * In questo caso, Spring creerà automaticamente un'istanza di JdbcTemplate (se è configurato correttamente)
-     * e la fornirà al setter setJdbcTemplateObject.
-     */
+  
     @Autowired
     public void setJdbcTemplateObject(JdbcTemplate jdbcTemplateObject) {
         this.jdbcTemplateObject = jdbcTemplateObject;
     }
 
-    /*
-     * Metodo per inserire un nuovo pc nel database.
-     * Prende in input i valori necessari per la tabella e restituisce un intero,
-     * che indica il numero di righe modificate (inserite).
-     */
+ 
     public int insertPc(String nome, String marca, String descrizione, double prezzo, String url, int qntMagazzino, int qntVenduti) {
         String query = "INSERT INTO tabellapc (nome, marca, descrizione, prezzo, url, qntMagazzino, qntVenduti) VALUES (?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplateObject.update(query, nome, marca, descrizione, prezzo, url, qntMagazzino, qntVenduti);
     }
 
-    /*
-     * Metodo per eliminare un pc dal database in base al nome.
-     * Restituisce il numero di righe eliminate.
-     */
+ 
     public int delete(String nome) {
         String query = "DELETE FROM tabellapc WHERE nome = ?";
         return jdbcTemplateObject.update(query, nome);
     }
 
-    /*
-     * Metodo per ottenere una lista di tutti i pc presenti nel database.
-     * Utilizza un ResultSetExtractor per convertire il ResultSet in un ArrayList di oggetti pc.
-     */
+   
     public ArrayList<pc> getLista() {
         String query = "SELECT * FROM tabellapc";
 
