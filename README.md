@@ -33,6 +33,29 @@ Technologies used:
 ![email Immagine 2024-10-29 150959](https://github.com/user-attachments/assets/41f6bf5e-5440-4ec0-8527-ca5f79bd7836)
 
 
+Notes to Run the App on Eclipse
+
+The Spring Boot project should contain the following features:
+
+    SPRING DATA JDBC
+    SPRING WEB
+    THYMELEAF
+    JAVA MAIL SENDER
+    MYSQL DRIVER
+    SPRING BOOT DEVTOOLS
+
+The app is connected to a MySQL table named tabellapc.
+
+Steps:
+
+    Create a table of PCs with the same name or change it in jdPctemplate.java.
+
+    Modify the credentials with your own email and app-specific password to use the JavaMail service.
+
+    Update the connection data to your database in the file DataBaseConfig.java.
+
+
+
 
 
     
