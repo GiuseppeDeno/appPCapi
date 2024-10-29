@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Qui puoi includere Materialize e altri CSS necessari -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+
+
+
+<body>
+
+<!--   vedi risorsa per aggiungere i frammenti https://stackoverflow.com/questions/71795281/attaching-a-specific-fragment-to-a-springboot-thymeleaf-project  -->
+<!---->
+<div th:fragment="navbar">
+     <nav class="blue darken-2">
+    <div class="nav-wrapper" >
+       <!-- //nota bene logoNoBg.jpg in src/main/resources/static/images/. -->  
+      <a href="#" class="brand-logo"><img src="/images/logoNoBg.png" style="object-fit: cover; height: 40px;" ></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="infoTxt" href="/vaiMagazzino">Magazzino</a></li>
+        
+       
+        <!--  nel comtrollerla chimata allo store è mappata con /listaPcStore -->
+        <li><a class="infoTxt" href="/listaPcStore">Store</a></li>
+       <!--  carrello viene aperto dopo la selezione e  non posso metterlo nella header   <li><a class="infoTxt" href="/process">Carrello</a></li>--> 
+      </ul>
+    </div>
+  </nav>
+
+   
+</div>
+
+<!-- Inizializzazione JS di Materialize -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    M.Sidenav.init(elems);
+});
+</script>
+
+</body>
+</html>
