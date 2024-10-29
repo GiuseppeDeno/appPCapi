@@ -122,11 +122,11 @@
     	        console.log(data.amiibo.length);
                 
                 // creo numero randomico per far uscire una immagine random 
-                //  let num = Math.floor(Math.random() * 19) + 1;
-                let num = Math.floor(Math.random() * data.amiibo.length); // Cambiato per evitare out of range
+             
+                let num = Math.floor(Math.random() * data.amiibo.length); 
                 
                 
-                // importante ho usato la card come se fosse una stringa quindi tra singoli apici e posso passate i dati tramite il dollaro 
+                
                 const cardHtml = `
                     <div class="col l4">
                         <div class="cardApi card">
