@@ -37,12 +37,15 @@ Notes to Run the App on Eclipse
 
 The Spring Boot project should contain the following features:
 
-    SPRING DATA JDBC
-    SPRING WEB
+    SPRING BOOT DEVTOOLS
     THYMELEAF
+    SPRING WEB
+    SPRING DATA JDBC
     JAVA MAIL SENDER
     MYSQL DRIVER
-    SPRING BOOT DEVTOOLS
+    
+    
+
 
 The app is connected to a MySQL table named tabellapc.
 
