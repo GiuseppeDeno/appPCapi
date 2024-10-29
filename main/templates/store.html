@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogo Prodotti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styling per la sidebar */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+            overflow-y: auto; /* SCROLL sul carrello: permette lo scroll se ci sono molti prodotti */
+        }
+        /* flex: mi serve per mettere il nome del prodotto affianco al bottone rimuovi */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .cardApi {
+            max-width: 300px;
+            margin: auto;
+        }
+        .card-title{
+        color:black;
+        }
+    </style>
+</head>
+<body>
+    <div th:include="layout/navbar :: navbar"></div>
+    <div class="container">
+        <h3>Catalogo</h3>
+        <div class="row">
+            <div class="col l8">
+                <div class="row">
+                    <div class="col l4" th:each="prodotto : ${lista}">
+                        <div class="card" style="height: 350px">
+                            <div class="card-content-wrapper" style="height: 200px;">
+                                <div class="card-image waves-effect waves-block waves-light" style="display: flex; justify-content: center; align-items: center;">
+                                    <img class="activator" th:src="${prodotto.url}" alt="Immagine Prodotto" style="object-fit:contain; height: 100px; padding-top:10px">
+                                </div>
+                                <div class="card-content">
+                                    <div style="height:80px">  
+                                        <span class="card-title activator grey-text text-darken-4" th:text="${prodotto.nome}">
+                                            <i class="material-icons right">more_vert</i>
+                                        </span>
+                                    </div>                                
+                                    <p>Prezzo: <span th:text="${prodotto.prezzo} + ' €'"></span></p>
+                                    <form action="/aggiungiCarrello" method="post">
+                                        <input type="hidden" name="nome" th:value="${prodotto.nome}">
+                                        <label for="quantita">Quantità:</label>
+                                        <input type="number" name="num" value="1" min="1" max="100">
+                                        <button type="submit" class="btn">Aggiungi </button>
+                                    </form>
+                                </div>
+                            </div><!-- fine div card-content-wrapper -->
+                              
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4" th:text="${prodotto.marca}">Marca<i class="material-icons right">close</i></span>
+                                <p>Descrizione: <span th:text="${prodotto.descrizione}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar per il carrello -->
+            <div class="sidebar">
+                <h4>Carrello</h4>
+                <div id="carrello">
+                    <div th:each="item : ${carrello}" class="cart-item">
+                        <span th:text="${item.nome}"></span>
+                        <span th:text="${item.qnt}"></span> <!-- Usa "qnt" se il metodo nella classe pcComprati si chiama getQnt -->
+                        <form action="/rimuoviDalCarrello" method="post">
+                            <input type="hidden" name="nome" th:value="${item.nome}">
+                            <button type="submit" class="btn red btn-small">Rimuovi</button>
+                        </form>
+                    </div>
+                    <h5>Totale: <span th:text="${somma} + ' €'"></span></h5>
+                    <form action="/confermaAcquisto" method="post">
+                        <button type="submit" class="btn">Conferma Acquisto</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- div dove metto i risultati delle api -->
+        <div id="risultatiApi"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <script>
+        window.onload = async function() {
+            try {
+                // Richiesta fetch alla API amiibo
+                const response = await fetch('https://www.amiiboapi.com/api/amiibo/?character=mario');
+                
+                // Verifica se la risposta è stata ricevuta con successo
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Converte la risposta in JSON
+                let data = await response.json();
+                
+                // Console log dei dati per capire quali prendere e mettere a schermo: saranno i character image e name
+                console.log(data);
+                console.log(data.amiibo[0].character)
+    	        console.log(data.amiibo[0].image)
+    	        console.log(data.amiibo[0].name)
+    	        console.log(data.amiibo.length);
+                
+                // creo numero randomico per far uscire una immagine random 
+                //  let num = Math.floor(Math.random() * 19) + 1;
+                let num = Math.floor(Math.random() * data.amiibo.length); // Cambiato per evitare out of range
+                
+                
+                // importante ho usato la card come se fosse una stringa quindi tra singoli apici e posso passate i dati tramite il dollaro 
+                const cardHtml = `
+                    <div class="col l4">
+                        <div class="cardApi card">
+                            <div class="card-image">
+                     
+                                <img src="${data.amiibo[num].image}" style="width:200px align-items:center";>
+                                <span class="card-title">${data.amiibo[num].character}</span> 
+                            </div>
+                            <div class="card-content">
+                            <p>TITOLO: ${data.amiibo[num].character}</p> 
+                            <p>Descrizione: ${data.amiibo[num].name}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Inserisce la card nel div "risultatiApi"
+                const divApi = document.getElementById("risultatiApi"); 
+                divApi.innerHTML = cardHtml;
+                
+            } catch (error) {
+                console.error('Errore durante il recupero dei dati JSON:', error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Magazzino</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div th:include="layout/navbar :: navbar"></div>
+    <div class="container">
+        <h2>Gestione Magazzino</h2>
+        
+        <h3>inserimento prodotti</h3>
+        <form  id="gestioneMagazzino" action="/gestioneMagazzino" method="POST">
+            <label for="nome">INSERISCI NOME:</label>
+            <input type="text" name="nome" required>
+            
+            <label for="marca">INSERISCI MARCA:</label>
+            <input type="text" name="marca" required>
+            
+            <label for="descrizione">INSERISCI DESCRIZIONE:</label>
+            <input type="text" name="descrizione" required>
+            
+            <label for="prezzo">INSERISCI PREZZO:</label>
+            <!-- mettendo text non serve fare il parse perche la classe prende cmq un double  -->
+            <input type="text" name="prezzo" required>
+            
+            <label for="url">INSERISCI URL immagine:</label>
+            <input type="text" name="url" required>
+            
+            <label for="qntMagazzino">INSERISCI quantità (default 30):</label>
+            <input type="number" name="qntMagazzino" value="30" min="0">
+            
+            <label for="qntVenduti">INSERISCI quantità Venduti (default 0):</label>
+            <input type="number" name="qntVenduti" value="0" min="0">
+            
+            <input type="submit" value="Inserisci Prodotto" class="btn">
+        </form>
+
+        <h2>Prodotti in Magazzino</h2>
+        <div class="row" >
+            <div th:each="prodotto : ${lista}">
+            
+                <div class="col l4
+                s12 m6 " style="margin-bottom:30px">
+                    <div class="card">
+                    <!-- center-align è per centrare l'mmagine dato che aggiungendo il mio style si mette a sx -->
+                        <div class="card-image "  style="display: flex; justify-content: center; align-items: center;">
+                            <img th:src="${prodotto.url}" alt="Immagine di ${prodotto.nome}" style="object-fit: cover; width:20%; height: 50px; margin-top:10px">
+                            <span class="card-title" th:text="${prodotto.nome}">Nome Prodotto</span>
+                        </div>
+                        <div class="card-content" >
+                            <p th:text="'Marca: ' + ${prodotto.marca}"></p>
+                            <p th:text="'Prezzo: €' + ${prodotto.prezzo}"></p>
+                            <p th:text="'Quantità in magazzino: ' + ${prodotto.qntMagazzino}"></p>
+                            <p th:text="'Quantità venduti: ' + ${prodotto.qntVenduti}"></p>
+                        </div>
+                        <div class="card-action">
+                            <form action="/rimuoviDalMagazzino" method="post">
+                                <input type="hidden" name="nome" th:value="${prodotto.nome}">
+                                <button type="submit" class="btn red">Rimuovi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>

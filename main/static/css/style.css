@@ -1,0 +1,41 @@
+    /* Stile per il form scrollabile */
+        #gestioneMagazzino {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        /* Riduce i margini degli elementi del form avvicinando le righe*/
+        #gestioneMagazzino label, #gestioneMagazzino input {
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* Ridimensiona l'input di testo */
+        #gestioneMagazzino input[type="text"], #gestioneMagazzino input[type="number"] {
+            font-size: 0.9rem;
+            padding: 5px;
+        }
+
+      
+        #gestioneMagazzino input {
+            width: 100%;
+        }
+
+        /* Stile pulsante di invio */
+        #gestioneMagazzino .btn {
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        
+        /*larghezza fissa delle card*/
+        
+        .card{
+	height:200px!important;
+	
+	 margin: 20px 10px; }
+        
